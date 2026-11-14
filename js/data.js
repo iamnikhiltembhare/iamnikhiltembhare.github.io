@@ -15,7 +15,7 @@ window.PORTFOLIO = {
   headline: "I keep systems running, secure and users productive.",
   intro:
     "IT Support Engineer in Mumbai with a background in Linux, cyber security and web development. I resolve escalations, find root causes and build small tools that make work easier.",
-  avatar: "assets/avatar.svg", // swap for assets/avatar.jpg (square, ≥ 800px)
+  avatar: "assets/avatar.jpg",
   avatarBadge: "👋 Hi there!",
   resume: "https://flowcv.com/resume/vkpmc4vrfo", // link or file path to your CV; set to "" to hide the button
   email: "niktem20@duck.com",

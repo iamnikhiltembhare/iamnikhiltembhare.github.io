@@ -1,9 +1,9 @@
 // Offline cache. Bump VERSION whenever you change site files.
-const VERSION = "v3";
+const VERSION = "v4";
 const CACHE = `portfolio-${VERSION}`;
 const ASSETS = [
   "./", "index.html", "css/style.css", "js/data.js", "js/main.js", "js/effects.js", "js/vendor/anime.umd.min.js",
-  "manifest.webmanifest", "assets/avatar.svg", "assets/icons/icon.svg", "assets/icons/icon-192.png",
+  "manifest.webmanifest", "assets/avatar.jpg", "assets/icons/icon.svg", "assets/icons/icon-192.png",
 ];
 
 self.addEventListener("install", (e) => {
