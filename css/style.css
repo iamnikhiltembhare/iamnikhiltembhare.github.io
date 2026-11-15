@@ -68,6 +68,7 @@ body {
   font: 400 1rem/1.65 var(--font-body);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  overflow-x: clip; /* modern: clips without creating a scroll container */
   /* respect notches / rounded corners when installed as an app */
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
@@ -479,6 +480,23 @@ a.chip-link:hover, a.chip-link:focus-visible { background: var(--accent); color:
 @media (display-mode: standalone) {
   .site-header { background: var(--bg); }
 }
+
+/* ==========================================================
+   Parallax (js/parallax.js) — glow orbs + framed-image overscan
+   ========================================================== */
+.orb-host { position: relative; isolation: isolate; }
+.orb {
+  position: absolute; z-index: -1; pointer-events: none;
+  width: calc(clamp(220px, 34vw, 480px) * var(--s, 1)); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, var(--c, var(--accent)), transparent 68%);
+  filter: blur(48px); opacity: .22; will-change: translate;
+}
+:root[data-theme="dark"] .orb { opacity: .3; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .orb { opacity: .3; } }
+/* Frame crops the image; the image is overscanned so it can slide inside without showing gaps */
+.has-parallax .project-thumb img { scale: 1.2; will-change: translate; }
+.has-parallax .avatar-wrap, .has-parallax .avatar-badge, .has-parallax .fx-dots, .has-parallax .hero-text { will-change: translate; }
+.hero { position: relative; }
 
 /* Back-to-top button */
 .fab {
