@@ -17,8 +17,13 @@ window.PORTFOLIO = {
     "IT Support Engineer in Mumbai with a background in Linux, cyber security and web development. I resolve escalations, find root causes and build small tools that make work easier.",
   avatar: "assets/avatar.jpg",
   avatarBadge: "👋 Hi there!",
-  resume: "https://flowcv.com/resume/vkpmc4vrfo", // link or file path to your CV; set to "" to hide the button
+  // CV button: link or file path; set to "" to hide. The PDF is generated from this file — open resume.html
+  // and print to PDF after editing. (Previous link: https://flowcv.com/resume/vkpmc4vrfo)
+  resume: "assets/Nikhil-Tembhare-Resume.pdf",
   email: "niktem20@duck.com",
+  // Privacy-friendly analytics (https://www.goatcounter.com). Put your GoatCounter code here, e.g. "nikhil" for
+  // nikhil.goatcounter.com. Leave "" to disable — no script is loaded then.
+  analytics: { goatcounter: "" },
   contactBlurb:
     "Need IT support, a Linux or security hand, or a website built? Have a role in mind or just want to say hi? My inbox is always open.",
 
@@ -123,7 +128,7 @@ window.PORTFOLIO = {
       description:
         "Offline, dependency-free loan calculator that compares flat and reducing-balance interest — EMI, total interest and the equivalent rate in the other method.",
       tech: ["HTML", "CSS", "JavaScript"],
-      image: "",
+      image: "assets/projects/interest-calculator.jpg",
       color: "#00b894",
       live: "",
       code: "https://github.com/iamnikhiltembhare/interest-rate-calculator-offline",
@@ -134,7 +139,7 @@ window.PORTFOLIO = {
       description:
         "Material-style calculator with spring animations, a clean state-machine hook and a layout that adapts from mobile to large desktop.",
       tech: ["React", "TypeScript", "Material UI", "Framer Motion", "Vite"],
-      image: "",
+      image: "assets/projects/modern-calculator.jpg",
       color: "#6c5ce7",
       live: "",
       code: "https://github.com/iamnikhiltembhare/TestCalculator",
@@ -144,7 +149,7 @@ window.PORTFOLIO = {
       tag: "Web App",
       description: "An animated flip clock with date and seconds, built as a single page and deployed on GitHub Pages.",
       tech: ["HTML", "CSS", "JavaScript"],
-      image: "",
+      image: "assets/projects/flip-clock.jpg",
       color: "#e17055",
       live: "https://iamnikhiltembhare.github.io/flip-clock/",
       code: "https://github.com/iamnikhiltembhare/flip-clock",
@@ -196,6 +201,7 @@ window.PORTFOLIO = {
       ],
     },
     {
+      type: "education",
       role: "PG Diploma in Information Security (PGDIS)",
       company: "RTMNU · Nagpur",
       period: "Oct 2022 — Sep 2023",
@@ -205,6 +211,7 @@ window.PORTFOLIO = {
       ],
     },
     {
+      type: "education",
       role: "Bachelor of Computer Application (BCA)",
       company: "City Premier College, Ajni · RTMNU",
       period: "Jul 2018 — Sep 2021",

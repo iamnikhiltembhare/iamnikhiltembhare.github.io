@@ -203,9 +203,17 @@ button { font: inherit; color: inherit; cursor: pointer; }
   filter: blur(40px); opacity: .35; animation: blob 12s ease-in-out infinite;
 }
 @keyframes blob { 50% { border-radius: 58% 42% 45% 55% / 42% 58% 42% 58%; transform: rotate(20deg); } }
-.avatar-wrap img {
-  position: relative; width: 100%; height: 100%; object-fit: cover;
-  border-radius: 32px; border: 1px solid var(--line); background: var(--surface);
+/* The photo has a white studio background, so it is multiplied onto a themed gradient:
+   white → gradient colour, black clothing/hair stays black. Works in light and dark mode. */
+.avatar-frame {
+  position: relative; width: 100%; height: 100%; isolation: isolate; overflow: hidden;
+  border-radius: 32px; border: 1px solid var(--line);
+  background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 38%, #fff), color-mix(in srgb, var(--accent-2) 42%, #fff));
+}
+.avatar-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; mix-blend-mode: multiply; }
+:root[data-theme="dark"] .avatar-frame { background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 62%, #000), color-mix(in srgb, var(--accent-2) 55%, #000)); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .avatar-frame { background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 62%, #000), color-mix(in srgb, var(--accent-2) 55%, #000)); }
 }
 .avatar-badge {
   position: absolute; left: -4%; bottom: 10%;
@@ -268,6 +276,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .skill-card { transition: transform .3s, box-shadow .3s, border-color .3s; }
 @media (hover: hover) { .skill-card.reveal:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); } }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+a.chip-link { transition: background-color .2s, color .2s; }
+a.chip-link:hover, a.chip-link:focus-visible { background: var(--accent); color: var(--accent-ink); }
 .chips-more { margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--line); }
 .chip { padding: 6px 14px; border-radius: 999px; background: var(--bg-2); font-size: .9rem; font-weight: 500; }
 

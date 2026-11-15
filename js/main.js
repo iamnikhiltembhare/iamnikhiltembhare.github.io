@@ -52,8 +52,13 @@
   const levelWord = (n) => (n >= 90 ? "Expert" : n >= 80 ? "Advanced" : n >= 70 ? "Proficient" : "Intermediate");
   $("#skills-grid").innerHTML = d.skills
     .map((g) => {
-      const bars = g.items.filter((i) => typeof i === "object");
-      const chips = g.items.filter((i) => typeof i === "string");
+      const bars = g.items.filter((i) => typeof i === "object" && i.level != null);
+      // chips: plain strings, or { name, url } for a link (e.g. a certificate you can verify)
+      const chips = g.items.filter((i) => typeof i === "string" || (typeof i === "object" && i.level == null));
+      const chipHTML = (i) =>
+        typeof i === "string" || !i.url
+          ? `<span class="chip">${esc(typeof i === "string" ? i : i.name)}</span>`
+          : `<a class="chip chip-link" href="${esc(i.url)}" target="_blank" rel="noopener">${esc(i.name)} <span aria-hidden="true">↗</span></a>`;
       const lvl = (n) => Math.max(0, Math.min(100, Number(n) || 0));
       return `<div class="skill-card reveal"><h3>${esc(g.group)}</h3>
         ${
@@ -68,7 +73,7 @@
                 .join("")}</ul>`
             : ""
         }
-        ${chips.length ? `<div class="chips ${bars.length ? "chips-more" : ""}">${chips.map((i) => `<span class="chip">${esc(i)}</span>`).join("")}</div>` : ""}
+        ${chips.length ? `<div class="chips ${bars.length ? "chips-more" : ""}">${chips.map(chipHTML).join("")}</div>` : ""}
       </div>`;
     })
     .join("");
@@ -233,6 +238,15 @@
       submitBtn.textContent = "Send message";
     }
   });
+
+  // Optional privacy-friendly analytics (GoatCounter) — only loaded when a code is set in data.js
+  if (d.analytics && /^[a-z0-9-]+$/i.test(d.analytics.goatcounter || "") && location.protocol !== "file:" && location.hostname.endsWith("github.io")) {
+    const gc = document.createElement("script");
+    gc.async = true;
+    gc.src = "https://gc.zgo.at/count.js";
+    gc.dataset.goatcounter = `https://${d.analytics.goatcounter}.goatcounter.com/count`;
+    document.head.append(gc);
+  }
 
   $("#year").textContent = new Date().getFullYear();
   $("#footer-name").textContent = d.name;
