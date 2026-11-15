@@ -49,26 +49,66 @@ window.PORTFOLIO = {
     { label: "Languages", value: "English, Hindi, Marathi" },
   ],
 
+  // Skills: { name, level } renders an animated percentage bar (level 0–100, a self-assessment —
+  // adjust to taste). Plain strings render as chips. Groups with only strings show chips only.
   skills: [
     {
       group: "IT Support",
-      items: ["Windows Server 2025", "Windows 7 – 11", "Troubleshooting", "Root Cause Analysis", "Change Requests", "Patch Management", "Incident Response"],
+      items: [
+        { name: "Troubleshooting", level: 95 },
+        { name: "Windows 7 – 11", level: 92 },
+        { name: "Root Cause Analysis", level: 88 },
+        { name: "Patch Management", level: 85 },
+        { name: "Incident Response", level: 85 },
+        "Windows Server 2025",
+        "Change Requests",
+      ],
     },
     {
       group: "Linux",
-      items: ["Arch Linux", "Ubuntu / Ubuntu Server", "Red Hat", "CentOS", "Linux Mint", "Kali Linux", "Parrot OS"],
+      items: [
+        { name: "Ubuntu / Ubuntu Server", level: 90 },
+        { name: "Arch Linux", level: 80 },
+        { name: "Red Hat", level: 75 },
+        { name: "Kali Linux", level: 75 },
+        "CentOS",
+        "Linux Mint",
+        "Parrot OS",
+      ],
     },
     {
       group: "Security",
-      items: ["Network Security", "Information Security", "Cryptography", "Ethical Hacking", "Wireshark", "Nmap"],
+      items: [
+        { name: "Network Security", level: 75 },
+        { name: "Ethical Hacking", level: 70 },
+        { name: "Wireshark", level: 70 },
+        { name: "Nmap", level: 70 },
+        { name: "Cryptography", level: 65 },
+        "Information Security",
+      ],
     },
     {
       group: "Web Development",
-      items: ["HTML5", "CSS3", "SASS", "Pug", "JavaScript", "Bootstrap", "React", "TypeScript", "MERN Stack"],
+      items: [
+        { name: "HTML5", level: 90 },
+        { name: "CSS3", level: 88 },
+        { name: "JavaScript", level: 85 },
+        { name: "React", level: 75 },
+        { name: "TypeScript", level: 65 },
+        "SASS",
+        "Pug",
+        "Bootstrap",
+        "MERN Stack",
+      ],
     },
     {
       group: "Programming",
-      items: ["C", "C++", "Java", "Python"],
+      items: [
+        { name: "Python", level: 75 },
+        { name: "Java", level: 70 },
+        { name: "C", level: 70 },
+        { name: "C++", level: 65 },
+      ],
     },
     {
       group: "Certifications",

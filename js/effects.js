@@ -356,20 +356,6 @@
         ease: "outElastic(1, .6)",
       });
     });
-
-    const links = $("#nav-links");
-    $("#menu-btn").addEventListener("click", () => {
-      if (!links.classList.contains("open")) return;
-      const items = $$("li", links);
-      animate(items, {
-        opacity: { from: 0, to: 1 },
-        translateX: { from: -24, to: 0 },
-        delay: stagger(60, { start: 120 }),
-        duration: 700,
-        ease: "outExpo",
-        onComplete: () => items.forEach((li) => { li.style.removeProperty("opacity"); li.style.removeProperty("transform"); }),
-      });
-    });
   }
 
   // ---------- Boot ----------

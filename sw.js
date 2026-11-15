@@ -1,5 +1,5 @@
 // Offline cache. Bump VERSION whenever you change site files.
-const VERSION = "v4";
+const VERSION = "v5";
 const CACHE = `portfolio-${VERSION}`;
 const ASSETS = [
   "./", "index.html", "css/style.css", "js/data.js", "js/main.js", "js/effects.js", "js/vendor/anime.umd.min.js",

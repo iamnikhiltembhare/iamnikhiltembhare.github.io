@@ -48,12 +48,60 @@
   $("#about-body").innerHTML = d.about.map((p) => `<p>${esc(p)}</p>`).join("");
   $("#about-facts").innerHTML = d.facts.map((f) => `<li><span>${esc(f.label)}</span><strong>${esc(f.value)}</strong></li>`).join("");
 
+  // Skills: {name, level} → animated bar; plain string → chip
+  const levelWord = (n) => (n >= 90 ? "Expert" : n >= 80 ? "Advanced" : n >= 70 ? "Proficient" : "Intermediate");
   $("#skills-grid").innerHTML = d.skills
-    .map(
-      (g) => `<div class="skill-card reveal"><h3>${esc(g.group)}</h3>
-        <div class="chips">${g.items.map((i) => `<span class="chip">${esc(i)}</span>`).join("")}</div></div>`
-    )
+    .map((g) => {
+      const bars = g.items.filter((i) => typeof i === "object");
+      const chips = g.items.filter((i) => typeof i === "string");
+      const lvl = (n) => Math.max(0, Math.min(100, Number(n) || 0));
+      return `<div class="skill-card reveal"><h3>${esc(g.group)}</h3>
+        ${
+          bars.length
+            ? `<ul class="bars">${bars
+                .map(
+                  (b) => `<li class="skill" title="${levelWord(lvl(b.level))}">
+                    <div class="skill-top"><span>${esc(b.name)}</span><span class="pct" data-to="${lvl(b.level)}">${lvl(b.level)}%</span></div>
+                    <div class="bar" role="img" aria-label="${esc(b.name)}: ${lvl(b.level)} percent, ${levelWord(lvl(b.level))}"><i style="--lvl:${lvl(b.level)}%"></i></div>
+                  </li>`
+                )
+                .join("")}</ul>`
+            : ""
+        }
+        ${chips.length ? `<div class="chips ${bars.length ? "chips-more" : ""}">${chips.map((i) => `<span class="chip">${esc(i)}</span>`).join("")}</div>` : ""}
+      </div>`;
+    })
     .join("");
+
+  // Animate the bars + count the percentages when each card scrolls into view
+  (function animateSkills() {
+    const cards = [...document.querySelectorAll(".skill-card")].filter((c) => c.querySelector(".bars"));
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window);
+    if (still) return; // bars stay at their final width
+    document.documentElement.classList.add("js-bars");
+    const run = (card) => {
+      card.classList.add("bars-on");
+      card.querySelectorAll(".skill").forEach((sk, i) => {
+        const pct = sk.querySelector(".pct");
+        const to = Number(pct.dataset.to);
+        const delay = 150 + i * 110, dur = 1300;
+        sk.style.setProperty("--delay", `${delay}ms`);
+        const t0 = performance.now() + delay;
+        const tick = (now) => {
+          const k = Math.min(1, Math.max(0, (now - t0) / dur));
+          pct.textContent = `${Math.round(to * (1 - Math.pow(1 - k, 4)))}%`; // easeOutQuart, matches the bar
+          if (k < 1) requestAnimationFrame(tick);
+        };
+        pct.textContent = "0%";
+        requestAnimationFrame(tick);
+      });
+    };
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((en) => { if (en.isIntersecting) { run(en.target); io.unobserve(en.target); } }),
+      { threshold: 0.25 }
+    );
+    cards.forEach((c) => io.observe(c));
+  })();
 
   // Projects + filters
   const tags = ["All", ...new Set(d.projects.map((p) => p.tag))];
@@ -202,19 +250,41 @@
   // ---------- Mobile menu ----------
   const menuBtn = $("#menu-btn");
   const links = $("#nav-links");
-  const setMenu = (open) => {
+  const scrim = $("#nav-scrim");
+  const html = document.documentElement;
+
+  // Extras shown only inside the mobile drawer: CTA + socials
+  const extra = document.createElement("li");
+  extra.className = "nav-extra";
+  extra.innerHTML = `<a class="btn btn-primary" href="#contact">Hire me</a><ul class="socials">${socialsHTML()}</ul>`;
+  links.append(extra);
+
+  const setMenu = (open, restoreFocus) => {
     links.classList.toggle("open", open);
+    scrim.classList.toggle("open", open);
+    html.classList.toggle("menu-open", open);
     menuBtn.setAttribute("aria-expanded", open);
     menuBtn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    if (!open && restoreFocus) menuBtn.focus();
   };
-  menuBtn.addEventListener("click", () => setMenu(!links.classList.contains("open")));
+  const isOpen = () => links.classList.contains("open");
+  menuBtn.addEventListener("click", () => setMenu(!isOpen()));
+  scrim.addEventListener("click", () => setMenu(false));
   links.addEventListener("click", (e) => e.target.closest("a") && setMenu(false));
-  document.addEventListener("keydown", (e) => e.key === "Escape" && setMenu(false));
+  document.addEventListener("keydown", (e) => e.key === "Escape" && isOpen() && setMenu(false, true));
   matchMedia("(min-width: 901px)").addEventListener("change", (m) => m.matches && setMenu(false));
+
+  // ---------- Back-to-top button ----------
+  const fab = $("#to-top");
+  fab.hidden = false;
+  fab.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
   // ---------- Header shadow + active link ----------
   const header = $(".site-header");
-  const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 8);
+  const onScroll = () => {
+    header.classList.toggle("scrolled", window.scrollY > 8);
+    fab.classList.toggle("show", window.scrollY > 700);
+  };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
